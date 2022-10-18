@@ -1,0 +1,4 @@
+.env
+._example.env
+node_modules
+tmp
