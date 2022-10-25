@@ -74,7 +74,7 @@ app.route('/add_note')
         if (author && raw) {
             notes.write_note(author, raw);
             res.render('mess', {
-                message: "add note sucess"
+                message: "add note success"
             });
         } else {
             res.render('mess', {
@@ -96,7 +96,7 @@ app.route('/edit_note')
         if (id && author && enote) {
             notes.edit_note(id, author, enote);
             res.render('mess', {
-                message: "edit note sucess"
+                message: "edit note success"
             });
         } else {
             res.render('mess', {
