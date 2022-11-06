@@ -23,14 +23,16 @@ class Notes {
     }
 
     get_note(id) {
-        var r = {}
+        var r = {};
         undefsafe(r, id, undefsafe(this.note_list, id));
         return r;
     }
 
     edit_note(id, author, raw) {
+
         undefsafe(this.note_list, id + '.author', author);
         undefsafe(this.note_list, id + '.raw_note', raw);
+
     }
 
     get_all_notes() {
@@ -94,6 +96,7 @@ app.route('/edit_note')
         let author = req.body.author;
         let enote = req.body.raw;
         if (id && author && enote) {
+
             notes.edit_note(id, author, enote);
             res.render('mess', {
                 message: "edit note success"
@@ -145,7 +148,10 @@ app.route('/status')
             "script-1": "uptime",
             "script-2": "free -m"
         };
+        //console.log({}.raw_note);
+
         for (let index in commands) {
+            console.log(commands[index]);
             exec(commands[index], {
                 shell: '/bin/bash'
             }, (err, stdout, stderr) => {

