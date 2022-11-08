@@ -47,6 +47,14 @@ class Notes {
 var notes = new Notes();
 notes.write_note("nobody", "this is nobody's first note");
 
+function check_input (id) {
+    if (Object.getOwnPropertyNames(notes).indexOf(id) === -1) {
+        return undefined;
+    } else {
+        return id;
+    }
+}
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -56,7 +64,6 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.get('/', function (req, res, next) {
     res.render('index', {
@@ -92,7 +99,7 @@ app.route('/edit_note')
         });
     })
     .post(function (req, res) {
-        let id = req.body.id;
+        let id = check_input(req.body.id);
         let author = req.body.author;
         let enote = req.body.raw;
         if (id && author && enote) {
@@ -115,7 +122,7 @@ app.route('/delete_note')
         });
     })
     .post(function (req, res) {
-        let id = req.body.id;
+        let id = check_input(req.body.id);
         if (id) {
             notes.remove_note(id);
             res.render('mess', {
@@ -130,7 +137,7 @@ app.route('/delete_note')
 
 app.route('/notes')
     .get(function (req, res) {
-        let q = req.query.q;
+        let q = check_input(req.query.q);
         let a_note;
         if (typeof (q) === "undefined") {
             a_note = notes.get_all_notes();
@@ -167,6 +174,8 @@ app.route('/status')
 
 app.route('/img')
     .get(function(req, res){
+        //sanitize the input
+
         res.sendFile(
             path.join(__dirname, '/images/', req.query.id || 'jhu.png'));
     })
