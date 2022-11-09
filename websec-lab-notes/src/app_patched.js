@@ -57,7 +57,7 @@ function check_input (id) {
 
 function sanitizeString(str){
     if (str) {
-        str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
+        str = str.replace(/[^a-z0-9áéíóúñü \\/\.,_-]/gim,"");
         return str.trim();
     } else {
         return undefined;
