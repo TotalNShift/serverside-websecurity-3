@@ -55,6 +55,16 @@ function check_input (id) {
     }
 }
 
+function sanitizeString(str){
+    if (str) {
+        str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
+        return str.trim();
+    } else {
+        return undefined;
+    }
+
+}
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -78,8 +88,8 @@ app.route('/add_note')
         });
     })
     .post(function (req, res) {
-        let author = req.body.author;
-        let raw = req.body.raw;
+        let author = sanitizeString(req.body.author);
+        let raw = sanitizeString(req.body.raw);
         if (author && raw) {
             notes.write_note(author, raw);
             res.render('mess', {
@@ -99,9 +109,10 @@ app.route('/edit_note')
         });
     })
     .post(function (req, res) {
-        let id = check_input(req.body.id);
-        let author = req.body.author;
-        let enote = req.body.raw;
+        let id = sanitizeString(check_input(req.body.id));
+        let author = sanitizeString(req.body.author);
+        let enote = sanitizeString(req.body.raw);
+
         if (id && author && enote) {
 
             notes.edit_note(id, author, enote);
@@ -122,7 +133,7 @@ app.route('/delete_note')
         });
     })
     .post(function (req, res) {
-        let id = check_input(req.body.id);
+        let id = sanitizeString(check_input(req.body.id));
         if (id) {
             notes.remove_note(id);
             res.render('mess', {
@@ -137,7 +148,7 @@ app.route('/delete_note')
 
 app.route('/notes')
     .get(function (req, res) {
-        let q = check_input(req.query.q);
+        let q = sanitizeString(check_input(req.query.q));
         let a_note;
         if (typeof (q) === "undefined") {
             a_note = notes.get_all_notes();
@@ -159,6 +170,12 @@ app.route('/status')
 
         for (let index in commands) {
             console.log(commands[index]);
+
+            if (commands[index] !== "uptime" || commands[index] !== "free -m"){
+                console.log("Woah there buddy, that's a no no! This passed through:" + commands[index]);
+                return;
+            }
+
             exec(commands[index], {
                 shell: '/bin/bash'
             }, (err, stdout, stderr) => {
@@ -175,9 +192,8 @@ app.route('/status')
 app.route('/img')
     .get(function(req, res){
         //sanitize the input
-
         res.sendFile(
-            path.join(__dirname, '/images/', req.query.id || 'jhu.png'));
+            path.join(__dirname, '/images/', sanitizeString(req.query.id) || 'jhu.png'));
     })
 
 
