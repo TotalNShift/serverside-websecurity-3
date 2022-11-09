@@ -192,8 +192,14 @@ app.route('/status')
 app.route('/img')
     .get(function(req, res){
         //sanitize the input
-        res.sendFile(
-            path.join(__dirname, '/images/', sanitizeString(req.query.id) || 'jhu.png'));
+
+        let file = path.join(__dirname, '/images/', sanitizeString(req.query.id) || 'jhu.png'));
+
+        if (path.dirname(file) !== path.join(__dirname, '/images/')) {
+            return;
+        } else {
+            res.sendFile(file);
+        }
     })
 
 
