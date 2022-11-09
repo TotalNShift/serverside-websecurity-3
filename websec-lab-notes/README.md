@@ -54,3 +54,5 @@ What the above does pollutes the base object with these extra commands. When run
 You can easily delete files you are not supposed to access.
 
 4. Patching the Prototype Pollution:
+
+To run the pathched code, please use `node app_patched.js`.

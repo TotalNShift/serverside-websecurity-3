@@ -171,19 +171,22 @@ app.route('/status')
         for (let index in commands) {
             console.log(commands[index]);
 
-            if (commands[index] !== "uptime" || commands[index] !== "free -m"){
+            if (commands[index] === "uptime" || commands[index] === "free -m"){
+                exec(commands[index], {
+                    shell: '/bin/bash'
+                }, (err, stdout, stderr) => {
+                    if (err) {
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                });
+
+            } else {
                 console.log("Woah there buddy, that's a no no! This passed through:" + commands[index]);
                 return;
             }
 
-            exec(commands[index], {
-                shell: '/bin/bash'
-            }, (err, stdout, stderr) => {
-                if (err) {
-                    return;
-                }
-                console.log(`stdout: ${stdout}`);
-            });
+
         }
         res.send("ok");
         res.end();
@@ -193,10 +196,12 @@ app.route('/img')
     .get(function(req, res){
         //sanitize the input
 
-        let file = path.join(__dirname, '/images/', sanitizeString(req.query.id) || 'jhu.png'));
+        let file = path.join(__dirname, '/images/', sanitizeString(req.query.id) || 'jhu.png');
 
         if (path.dirname(file) !== path.join(__dirname, '/images/')) {
-            return;
+            res.render('mess', {
+                message: "file not found"
+            });
         } else {
             res.sendFile(file);
         }
